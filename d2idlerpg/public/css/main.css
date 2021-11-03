@@ -1,0 +1,42 @@
+html {
+    background-color:black;
+}
+
+html, body, #app { width: 100%; height: 100%; }
+
+body {
+    color: white;
+}
+
+#sidebar {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 10;
+    height: 100%; width: 100%;
+    background-color: #232a35;
+    transform: translateX(-100%) translateY(0) translateZ(0);
+    transition: transform .28s ease-out, -webkit-transform .28s ease-out;
+}
+
+#gameScreen {
+    width: 100%; height: 100%;
+    background-size: cover; background-image: linear-gradient(rgba(0, 0, 0, .75),rgba(0, 0, 0, .75)), url(bk.jpg); background-position: center;
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #EEEEEE;
+}
+
+ul.navbar li {
+    float:left;
+}
+
+ul.navbar li a {
+    display: block;
+    color: #000000;
+    font-weight:bold;
+    padding: 8px 16px;
+    text-decoration: none;
+}
