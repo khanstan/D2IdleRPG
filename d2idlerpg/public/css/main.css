@@ -1,6 +1,23 @@
-html {
-    background-color:black;
+@font-face {
+    font-family: ExocetL;
+    src: url("../assets/fonts/films.EXL_____.ttf");
 }
+
+@font-face {
+    font-family: ExocetH;
+    src: url("../assets/fonts/films.EXH_____.ttf");
+}
+
+* {
+    font-family: ExocetL, Trebuchet MS;
+}
+
+html {
+    background-image: url("../assets/bg-dark.png");
+    background-repeat: repeat;
+}
+
+
 
 html, body, #app { width: 100%; height: 100%; }
 
@@ -22,11 +39,12 @@ body {
 }
 
 .navbar {
-    list-style-type: none;
+    list-style: none;
+    display: flex;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #EEEEEE;
+    background-color: #000000;
 }
 
 ul.navbar li {
@@ -35,8 +53,91 @@ ul.navbar li {
 
 ul.navbar li a {
     display: block;
-    color: #000000;
+    color: red;
     font-weight:bold;
     padding: 8px 16px;
     text-decoration: none;
+}
+
+ul.navbar li:last-child {
+    margin-left: auto;
+}
+
+#heroPortrait {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+}
+
+/* ENEMY HERE NEXT. JUST NAME AND STATS BELOW. SAME BOX AS BATTLE LOG??? HP BARS ASWELL ^^^ */
+
+
+#userInterface-battlelog-div {
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.829);
+    border-radius: 25px;
+    color: white;
+    font-size: 0.9vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 30vh;
+    margin: auto;
+    width: 25vw;
+    padding: 1vw;
+    cursor: default;
+}
+
+#userInterface-enemy-div {
+    background-color: rgba(0, 0, 0, 0.829);
+    border-radius: 25px;
+    text-align: center;
+    color: white;
+    font-size: 0.9vw;
+    position: relative;
+    left: 70vw;
+    top: -5vh;
+    height: 30vh;
+    width: 15vw;
+    padding: 1vw;
+    cursor: default;
+}
+
+#userInterface-battlelog-div-paragraphs {
+    position: relative;
+    overflow-y: auto;
+    height: 22vh;
+}
+
+small {
+    font-size: 10px;
+}
+
+#userInterface-attackButton {
+    background:rgba(100, 27, 27, 0.85);
+    color: white;
+    padding-bottom: 10px;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: 15%;
+}
+
+.normalDamage {
+    color: red;
+}
+
+#userInterface-character-stats {
+    position: relative;
+    max-width: 12em;
+    top: 25vh;
+    left: 16vw;
+
+    height: 30vh;
+    width: 15vw;
+    padding: 1vw;
 }

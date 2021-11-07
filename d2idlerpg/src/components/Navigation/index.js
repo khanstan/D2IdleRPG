@@ -21,6 +21,12 @@ const NavigationAuth = () => (
       <Link to={ROUTES.LANDING}>Landing</Link>
     </li>
     <li>
+      <Link to={ROUTES.INVENTORY}>Inventory</Link>
+    </li>    
+    <li>
+      <Link to={ROUTES.CHARACTER_PAGE}>Character Page</Link>
+    </li>
+    <li>
       <Link to={ROUTES.HOME}>Home</Link>
     </li>
     <li>
@@ -31,7 +37,7 @@ const NavigationAuth = () => (
     </li>
   </ul>
 );
- 
+
 const NavigationNonAuth = () => (
   <ul className="navbar">
     <li>
