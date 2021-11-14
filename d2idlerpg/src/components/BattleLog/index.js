@@ -23,9 +23,9 @@ const BattleLogDiv = (props) => (
         </p>
         <div id="userInterface-battlelog-div-paragraphs">
             {props.text.map((row, key) => {
-                if (row.type == 0) {
+                if (row.type === 0) {
                     return <Fragment key={key}><p>Welcome to D2 Idle RPG (v. 0.0.1).</p><p>Click ATTACK! to start playing!</p></Fragment>
-                } if (row.type == 3) {
+                } if (row.type === 3) {
                     return <p key={key}><span style={styleYellow}>{row.enemy}</span> is dead!</p>;
                     
                 } else {

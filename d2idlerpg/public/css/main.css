@@ -118,13 +118,22 @@ small {
 #userInterface-attackButton {
     background:rgba(100, 27, 27, 0.85);
     color: white;
-    padding-bottom: 10px;
     position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 10%;
+    left: 40%;
     width: 20%;
     height: 15%;
+}
+
+.idleButton {
+    background:rgba(100, 27, 27, 0.85);
+    border-top: 0px solid transparent;
+    color: white;
+    position: absolute;
+    top: 25%;
+    left: 45%;
+    width: 10vw;
+    height: 5vh;
 }
 
 .normalDamage {

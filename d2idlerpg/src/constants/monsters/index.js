@@ -26,4 +26,13 @@ export const MONSTERS = [
         "defence": 30,
         "xp": 3
     },
+    {
+        "id": 3,
+        "name": "Andariel(boss)",
+        "maxHp": 10000,
+        "hp": 10000,
+        "attack": 100,
+        "defence": 300,
+        "xp": 300
+    },
 ];

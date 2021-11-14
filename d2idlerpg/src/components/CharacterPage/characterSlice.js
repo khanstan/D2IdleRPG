@@ -6,6 +6,7 @@ export const characterSlice = createSlice({
     initialState: {
         name: "Necromancer",
         level: 1,
+        xpToLevelUp: 100,
         xp: 0,
         hp: 100,
         attack: [1, 5],
@@ -18,11 +19,21 @@ export const characterSlice = createSlice({
         },    
         successfulKill: (state, action) => {
             state.xp += action.payload;
-            if (state.xp >= 100) {
+            if (state.xp >= state.xpToLevelUp) {
                 state.level += 1;
-                state.xp = state.xp - 100;
+                state.xp = 0;
+                state.xpToLevelUp = state.level * 100 * 1.15;
+                state.hp = state.hp + state.hp/10;
+                state.attack = [state.attack[0] + 1*state.level, state.attack[1] + 1*state.level];
+                state.defence = state.defence + 5;
+                state.speed = state.speed + 1;
+
             }
+        },
+        levelUp: (state, action) => {
+            state.xp = state.level * 100 * 1.25;
         }
+
     },
 
 }

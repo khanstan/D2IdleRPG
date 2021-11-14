@@ -11,7 +11,10 @@ const HomePage = () => (
   <div id="mainScreen">
     <img id="heroPortrait" src={HERO_CLASSES_MAP.DRUID.portrait}></img>
     <div><CharacterPage></CharacterPage></div>
-    <div><Attack></Attack></div>
+    <div>
+      <Attack></Attack>
+      {/* <button id="idleButton" className="idleButton" type="button">Idle!</button> */}
+    </div>
     <div><BattleLog></BattleLog></div>
     <div><Enemy></Enemy></div>
   </div>
