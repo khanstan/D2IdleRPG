@@ -1,13 +1,11 @@
 import React from 'react';
 import { withAuthorization } from '../Session';
-import { HERO_CLASSES_MAP } from '../../constants/gameConstants';
 import { useSelector } from 'react-redux';
 import { selectCharacter } from './characterSlice';
 
 
 const Character = (props) => (
   <div id="userInterface-character-stats">
-    {/* <img src={HERO_CLASSES_MAP.DRUID.portrait}></img> */}
     <p>Name: {props.name}</p>
     <p>Level: {props.level} ({props.xp} XP)</p>
     <p>Attack: {props.attack[0]}-{props.attack[1]}</p>

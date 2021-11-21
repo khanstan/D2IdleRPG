@@ -17,10 +17,7 @@ import CharacterPage from '../CharacterPage';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
-import BattleLog from '../BattleLog';
 
-
-import { connect } from 'react-redux'
 
 const App = () => (
   <Router>

@@ -8,6 +8,19 @@
     src: url("../assets/fonts/films.EXH_____.ttf");
 }
 
+.normalFont {
+    font-family: Verdana, Geneva, sans-serif;
+    color:rgba(100, 27, 27, 0.85);
+}
+
+.centered {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+}
+
 * {
     font-family: ExocetL, Trebuchet MS;
 }
@@ -149,4 +162,8 @@ small {
     height: 30vh;
     width: 15vw;
     padding: 1vw;
+}
+
+.purple {
+    color: purple;
 }
