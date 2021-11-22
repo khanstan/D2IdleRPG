@@ -17,6 +17,7 @@ import CharacterPage from '../CharacterPage';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import CharacterCreation from '../CharacterCreation';
 
 
 const App = () => (
@@ -35,6 +36,8 @@ const App = () => (
       <Route path={ROUTES.ADMIN} component={AdminPage} />
       <Route path={ROUTES.CHARACTER_PAGE} component={CharacterPage} />
       <Route path={ROUTES.INVENTORY} component={Inventory} />
+      <Route path={ROUTES.CHARACTER_CREATION} component={CharacterCreation} />
+
 
     </div>
   </Router>
