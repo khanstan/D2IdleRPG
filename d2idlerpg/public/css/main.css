@@ -13,6 +13,9 @@
     color:rgba(100, 27, 27, 0.85);
 }
 
+.heroPortrait {
+}
+
 .centered {
         display: flex;
         flex-direction: column;
