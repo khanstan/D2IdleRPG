@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
-import { getDatabase, ref, set, onValue } from "firebase/database";
+import { getDatabase, ref, set, push, child, update } from "firebase/database";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -37,6 +37,14 @@ class Firebase {
     username: name,
     email: email
   });
+
+
+  createCharacter = (name, character) => set(push(ref(this.db, 'characters/' + this.auth.currentUser.uid)), {
+    characterName: name,
+    characterType: character
+  });
+
+  charactersRef = () => ref(this.db, 'users/' + this.auth.currentUser.uid);
 
   // newCharacter = (uid, name) =()
 

@@ -17,18 +17,22 @@ class AdminPage extends Component {
     this.setState({ loading: true });
 
     onValue(this.props.firebase.usersRef(), (snapshot) => {
-      const usersObject = snapshot.val();
-      const usersList = Object.keys(usersObject).map(key => ({
-        ...usersObject[key],
-        uid: key,
-      }));
+      if (snapshot.exists()) {
+        const usersObject = snapshot.val();
+        const usersList = Object.keys(usersObject).map(key => ({
+          ...usersObject[key],
+          uid: key,
+        }));
 
-      this.setState({
-        users: usersList,
-        loading: false,
-      });
+        this.setState({
+          users: usersList,
+          loading: false,
+        });
 
-      console.log(this.state.users)
+        console.log(this.state.users)
+      } else {
+        console.log('no users')
+      }
     });
   }
 
