@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
-import { getDatabase, ref, set, push, child, update } from "firebase/database";
+import { getDatabase, ref, set, push } from "firebase/database";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -15,9 +15,9 @@ class Firebase {
   constructor() {
     this.app = initializeApp(config);
     this.auth = getAuth();
-    this.user = this.auth.currentUser;
     this.db = getDatabase();
   }
+
   //***Auth API***
   doCreateUserWithEmailAndPassword = (email, password) =>
     createUserWithEmailAndPassword(this.auth, email, password);
@@ -30,7 +30,7 @@ class Firebase {
   doPasswordReset = email => sendPasswordResetEmail(this.auth, email);
 
   doPasswordUpdate = password =>
-    this.user.updatePassword(this.auth, password);
+    this.user.currentUser.updatePassword(this.auth, password);
 
   // *** User API ***
   userRef = (uid, name, email) => set(ref(this.db, 'users/' + uid), {
@@ -44,7 +44,7 @@ class Firebase {
     characterType: character
   });
 
-  charactersRef = () => ref(this.db, 'users/' + this.auth.currentUser.uid);
+  charactersRef = (uid) => ref(this.db, 'characters/' + uid);
 
   // newCharacter = (uid, name) =()
 

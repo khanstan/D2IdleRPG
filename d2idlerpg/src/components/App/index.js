@@ -14,10 +14,10 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import Inventory from '../Inventory';
 import CharacterPage from '../CharacterPage';
+import CharacterCreation from '../CharacterCreation';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
-import CharacterCreation from '../CharacterCreation';
 
 
 const App = () => (
