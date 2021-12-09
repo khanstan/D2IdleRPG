@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { getDatabase, off, onValue } from "firebase/database";
 
+import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import { compose } from 'recompose';
+
+import * as ROLES from '../../constants/roles';
+
 
 class AdminPage extends Component {
   constructor(props) {
@@ -29,7 +34,6 @@ class AdminPage extends Component {
           loading: false,
         });
 
-        console.log(this.state.users)
       } else {
         console.log('no users')
       }
@@ -71,4 +75,12 @@ const UserList = ({ users }) => (
   </ul>
 );
 
-export default withFirebase(AdminPage);
+
+
+const condition = authUser => authUser
+   //authUser && !!authUser.roles[ROLES.ADMIN];
+
+export default compose(
+  withFirebase,
+  withAuthorization(condition),
+)(AdminPage);

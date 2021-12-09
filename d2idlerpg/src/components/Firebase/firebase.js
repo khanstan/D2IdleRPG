@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail } from "firebase/auth";
-import { getDatabase, ref, set, push } from "firebase/database";
+import { getDatabase, ref, set, push, child } from "firebase/database";
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -16,6 +16,7 @@ class Firebase {
     this.app = initializeApp(config);
     this.auth = getAuth();
     this.db = getDatabase();
+    this.currentCharacterId = 0;
   }
 
   //***Auth API***
@@ -32,23 +33,82 @@ class Firebase {
   doPasswordUpdate = password =>
     this.user.currentUser.updatePassword(this.auth, password);
 
+
+  onAuthUserListener = (next, fallback) =>
+    this.auth.onAuthStateChanged(authUser => {
+      if (authUser) {
+        this.user(authUser.uid)
+          .get()
+          .then(snapshot => {
+            const dbUser = snapshot.data();
+
+            // default empty roles
+            if (!dbUser.roles) {
+              dbUser.roles = {};
+            }
+
+            // merge auth and db user
+            authUser = {
+              uid: authUser.uid,
+              email: authUser.email,
+              providerData: authUser.providerData,
+              ...dbUser,
+            };
+            next(authUser);
+          });
+      } else {
+        fallback();
+      }
+    });
+
   // *** User API ***
-  userRef = (uid, name, email) => set(ref(this.db, 'users/' + uid), {
+  userRef = (uid, name, email, roles) => set(ref(this.db, 'users/' + uid), {
     username: name,
-    email: email
+    email: email,
+    roles
   });
 
+  createCharacterKey = () => push(ref(this.db, 'characters/' + this.auth.currentUser.uid));
 
-  createCharacter = (name, character) => set(push(ref(this.db, 'characters/' + this.auth.currentUser.uid)), {
+
+  createCharacter = (name, character, creationKey = this.createCharacterKey()) => set(creationKey, {
     characterName: name,
-    characterType: character
+    characterType: character,
+    characterLevel: 0,
+    characterXp: 0,
+    characterCurrentHp: 100,
+    characterMaxHp: 100,
+    uid: this.auth.currentUser.uid,
+    cid: creationKey.key,
+    base64: null
   });
+
+
+
+  updateCharacter = (cid, cname, ctype, level, xp, currentHp, maxHp) =>
+    set(push(ref(this.db, 'characters/' + this.auth.currentUser.uid + '/' + cid)), {
+      characterName: cname,
+      characterType: ctype,
+      characterLevel: 0,
+      characterXp: 0,
+      characterCurrentHp: 100,
+      characterMaxHp: 100,
+      uid: this.auth.currentUser.uid,
+      base64: null
+    });
+
+  playCharacter = (cid) => {
+    this.currentCharacterId = cid;
+  }
+
+  currentCharacterRef = (cid) => ref(this.db, 'characters/' + this.auth.currentUser.uid + '/' + cid);
 
   charactersRef = (uid) => ref(this.db, 'characters/' + uid);
 
   // newCharacter = (uid, name) =()
 
   usersRef = () => ref(this.db, 'users');
+  allCharactersRef = () => ref(this.db, 'characters');
 
 }
 

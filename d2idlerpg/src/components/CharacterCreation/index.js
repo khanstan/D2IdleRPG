@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Grid from '@mui/material/Grid';
-import Item from '@mui/material/Grid';
 import { HERO_CLASSES_MAP } from '../../constants/gameConstants';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { off, onValue } from "firebase/database";
+import './CharacterCreation.css';
+import { withAuthorization } from '../Session';
 
 let characterSelected = null;
 
@@ -30,24 +30,22 @@ function selectCharacter(e, char) {
 
 const CharacterCreation = (props) => (
     <Grid container
-            direction="column"
-            justifyContent="center"
-            alignItems="center">
-    <div>
-        <h1>create a character here</h1>
-        <img data-class="AMA" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.AMAZON.portrait}></img>
-        <img data-class="ASA" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.ASASSIN.portrait}></img>
-        <img data-class="NEC" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.NECROMANCER.portrait}></img>
-        <img data-class="BAR" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.BARBARIAN.portrait}></img>
-        <img data-class="PAL" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.PALADIN.portrait}></img>
-        <img data-class="SOR" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.SORCERESS.portrait}></img>
-        <img data-class="DRU" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.DRUID.portrait}></img>
-        <CharacterCreationForm />
-    </div>
+        direction="column"
+        justifyContent="center"
+        alignItems="center">
+        <div>
+            <h1>create new character here</h1>
+            <img data-class="AMA" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.AMAZON.portrait}></img>
+            <img data-class="ASA" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.ASASSIN.portrait}></img>
+            <img data-class="NEC" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.NECROMANCER.portrait}></img>
+            <img data-class="BAR" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.BARBARIAN.portrait}></img>
+            <img data-class="PAL" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.PALADIN.portrait}></img>
+            <img data-class="SOR" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.SORCERESS.portrait}></img>
+            <img data-class="DRU" onClick={selectCharacter} className="heroPortrait" src={HERO_CLASSES_MAP.DRUID.portrait}></img>
+            <CharacterCreationForm />
+        </div>
     </Grid>
 );
-
-
 
 class CharacterCreationFormBase extends Component {
     constructor(props) {
@@ -60,21 +58,16 @@ class CharacterCreationFormBase extends Component {
         if (!characterSelected) {
             alert('Please select a character first.')
         } else {
-
-        const { name } = this.state;
-
-        this.props.firebase
-            .createCharacter(name, characterSelected)
-            .then(() => {
-                //this.setState({ ...INITIAL_STATE });
-                //this.props.history.push(ROUTES.CHARACTER_CREATION);
-            })
-            .catch(error => {
-                this.setState({ error });
-            });
+            const { name } = this.state;
+            this.props.firebase
+                .createCharacter(name, characterSelected)
+                .then(() => {
+                    this.setState({ ...INITIAL_STATE });
+                })
+                .catch(error => {
+                    this.setState({ error });
+                });
         }
-
-
         event.preventDefault();
     };
 
@@ -83,19 +76,22 @@ class CharacterCreationFormBase extends Component {
     };
 
     playCharacter(e) {
+        this.props.firebase.playCharacter(e.target.dataset.charid);
         this.props.history.push(ROUTES.HOME);
+        console.log('You are now playing with: ' + this.currentCharacterId)
     };
 
     renderCharacters() {
         const characters = this.state.characters;
         return characters.map((character, index) => {
-            const { characterName, characterType } = character;
+            const { characterName, characterType, characterLevel, cid } = character;
             return (
                 <tr key={index}>
                     <td>{index + 1}.</td>
                     <td>{characterName}</td>
                     <td>{characterType}</td>
-                    <td><button onClick={this.playCharacter.bind(this)}>Play!</button></td>
+                    <td>{characterLevel}</td>
+                    <td><button data-charid={cid} onClick={this.playCharacter.bind(this)}>Play!</button></td>
                 </tr>
             )
         })
@@ -112,9 +108,8 @@ class CharacterCreationFormBase extends Component {
                     const charactersObject = snapshot.val();
                     const charactersList = Object.keys(charactersObject).map(key => ({
                         ...charactersObject[key],
-                        uid: key,
+                        cid: key
                     }));
-
                     this.setState({
                         characters: charactersList,
                         loading: false,
@@ -131,6 +126,9 @@ class CharacterCreationFormBase extends Component {
 
     componentWillUnmount() {
         off(this.props.firebase.charactersRef());
+        this.setState = (state, callback) => {
+            return;
+        };
     }
 
     render() {
@@ -140,30 +138,40 @@ class CharacterCreationFormBase extends Component {
 
         return (
             <>
-            
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="name"
-                    value={name}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Choose your name" />
-                <button disabled={isInvalid} type="submit">
-                    Create Character
-                </button>
 
-                {error && <p>{error.message}</p>}
-            </form>
+                <form onSubmit={this.onSubmit}>
+                    <input
+                        name="name"
+                        value={name}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Choose your name" />
+                    <button disabled={isInvalid} type="submit">
+                        Create Character
+                    </button>
+                    <h2>or play with an existing one...</h2>
+                    {error && <p>{error.message}</p>}
+                </form>
 
-            <table>
-                <tbody>
-                    {this.renderCharacters()}
-                </tbody>
-            </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Character name</th>
+                            <th scope="col">Class</th>
+                            <th scope="col">Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderCharacters()}
+                    </tbody>
+                </table>
             </>
         );
     }
 }
+
+const condition = authUser => !!authUser;
 
 const CharacterCreationForm = compose(
     withRouter,
@@ -172,6 +180,6 @@ const CharacterCreationForm = compose(
 
 
 
-export default CharacterCreation;
+export default withAuthorization(condition)(CharacterCreation);
 
 export { CharacterCreationForm };
