@@ -19,7 +19,6 @@ import CharacterCreation from '../CharacterCreation';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
-
 const App = () => (
   <Router>
     <div>

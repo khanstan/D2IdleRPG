@@ -1,6 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { withFirebase } from '../Firebase';
-
+import { createSlice } from '@reduxjs/toolkit';
 
 export const characterSlice = createSlice({
     name: 'character',

@@ -2,6 +2,7 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import enemyReducer from '../components/Enemy/enemySlice'
 import characterReducer from '../components/CharacterPage/characterSlice'
 import battleLogReducer from '../components/BattleLog/battleLogSlice'
+import throttle from 'lodash.throttle'
 
 const preloadedState = localStorage.getItem('reduxState')
   ? JSON.parse(localStorage.getItem('reduxState'))
@@ -26,11 +27,23 @@ const store = configureStore({
 })
 
 const saveToCloud = () => {
-  
+
 }
 
+const saveStateToLocalStorage = () => {
+  try {
+    console.log('Saving to local storage...');
+    localStorage.setItem('reduxState', JSON.stringify(store.getState()));
+    console.log('Saved.');
+  } catch (err) {
+    throw new Error('There was an error while trying to save the state to localStorage')
+  }
+}
+
+const throttledSaveToLocalStorage = throttle(() => saveStateToLocalStorage(), 1000);
+
 store.subscribe(() => {
-  localStorage.setItem('reduxState', JSON.stringify(store.getState()))
+  throttledSaveToLocalStorage();
 })
 
 export default store;
