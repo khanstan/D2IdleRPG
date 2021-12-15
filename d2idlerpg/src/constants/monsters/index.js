@@ -16,23 +16,30 @@ export const MONSTERS = [
         "attack": 2,
         "defence": 20,
         "xp": 2
-    },   
+    },
     {
         "id": 2,
         "name": "Brute",
-        "maxHp": 100,
-        "hp": 100,
+        "maxHp": 150,
+        "hp": 150,
+        "attack": 3,
+        "defence": 30,
+        "xp": 5
+    }, {
+        "id": 3,
+        "name": "Fetish",
+        "maxHp": 70,
+        "hp": 70,
         "attack": 3,
         "defence": 30,
         "xp": 3
-    },
-    {
-        "id": 3,
-        "name": "Andariel(boss)",
-        "maxHp": 10000,
-        "hp": 10000,
-        "attack": 100,
-        "defence": 300,
-        "xp": 300
+    }, {
+        "id": 4,
+        "name": "Skeleton",
+        "maxHp": 100,
+        "hp": 100,
+        "attack": 4,
+        "defence": 20,
+        "xp": 5
     },
 ];

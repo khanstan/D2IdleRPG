@@ -31,7 +31,7 @@ export const enemySlice = createSlice({
         state.attack = MONSTERS[state.nextMonsterId].attack
         state.defence = MONSTERS[state.nextMonsterId].defence
         state.xp = MONSTERS[state.nextMonsterId].xp
-        state.killCheck ^=1 //by flipping the bit 
+        state.killCheck ^=1 
       }
     },
   }

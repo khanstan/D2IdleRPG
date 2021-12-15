@@ -37,7 +37,6 @@ const saveStateToCloud = () => {
   myHeaders.append("Content-Type", "text/plain");
 
   const payload = JSON.stringify({"reduxState": store.getState()});
-  //const raw = `{\"base64\":\"${payload}\"}`;
 
   const requestOptions = {
     method: 'PATCH',

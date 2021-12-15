@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
 import { HERO_CLASSES_MAP } from '../../constants/gameConstants';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
@@ -19,6 +20,9 @@ const INITIAL_STATE = {
     character: '',
     characters: [],
     loading: true,
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
 };
 
 function selectCharacter(e, char) {
@@ -84,6 +88,14 @@ class CharacterCreationFormBase extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    handleClick = () => () => {
+        this.setState({ open: true });
+    };
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
     loadCharacter = (uid, cid) => {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "text/plain");
@@ -107,6 +119,22 @@ class CharacterCreationFormBase extends Component {
         this.props.history.push(ROUTES.HOME);
     };
 
+    deleteCharacter(e) {
+        let uid = this.uid;
+        let cid = e.target.dataset.charid;
+        var raw = "";
+
+        var requestOptions = {
+            method: 'DELETE',
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch(`https://d2idlerpg-default-rtdb.europe-west1.firebasedatabase.app/characters/${uid}/${cid}.json`, requestOptions)
+            .then(this.handleClick())
+            .catch(error => console.log('Error while deleting character: ', error));
+    }
+
     renderCharacters() {
         const characters = this.state.characters;
         return characters.map((character, index) => {
@@ -118,6 +146,7 @@ class CharacterCreationFormBase extends Component {
                     <td>{type}</td>
                     <td>{level}</td>
                     <td><button data-charid={cid} data-chartype={type} data-charname={name} onClick={this.playCharacter.bind(this)}>Play!</button></td>
+                    <td><button data-charid={cid} onClick={this.deleteCharacter.bind(this)}>Delete!</button></td>
                 </tr>
             )
         })
@@ -159,13 +188,20 @@ class CharacterCreationFormBase extends Component {
     }
 
     render() {
-        const { name, character, error } = this.state;
+        const { name, error, open } = this.state;
 
         const isInvalid = name === '';
 
         return (
             <>
-
+                <div>
+                    <Snackbar
+                        open={open}
+                        autoHideDuration={2000}
+                        onClose={this.handleClose}
+                        message="Character deleted!"
+                    />
+                </div>
                 <form onSubmit={this.onSubmit}>
                     <input
                         name="name"
@@ -202,7 +238,7 @@ class CharacterCreationFormBase extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         playDispatch: (arg) => dispatch(play(arg)),
-        reload: (arg) => dispatch(reload(arg)) 
+        reload: (arg) => dispatch(reload(arg))
     };
 }
 

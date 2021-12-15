@@ -129,11 +129,9 @@ class LandingPage extends Component {
         <thead>
           <tr>
             <th colSpan="50">D2IdleRPG Ranklist</th>
-
           </tr>
         </thead>
         <tbody>
-          {/* {this.renderAllCharacters()} */}
           <tr>
             <td>#</td>
             <td>Character name</td>
