@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { MONSTERS } from '../../constants/monsters/index'
-import { battleLogSlice } from '../BattleLog/battleLogSlice';
 
 const allMonstersCount = MONSTERS.length;
 

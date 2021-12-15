@@ -17,7 +17,6 @@ const Character = (props) => (
 
 export function CharacterPage() {
   const character = useSelector(selectCharacter);
-
   return (
     <Character name={character.name} level={character.level} xp={character.xp} attack={character.attack} defence={character.defence} hp={character.hp} speed={character.speed}></Character>
   )

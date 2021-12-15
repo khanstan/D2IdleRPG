@@ -69,17 +69,17 @@ class LandingPage extends Component {
     if (characters.length > 0) {
 
       const mergedArray = Object.assign(...characters);
-
+      console.log(mergedArray)
       return Object.keys(mergedArray).map((item, key) => {
-        const { characterName, characterType, characterLevel, characterXp } = mergedArray[item];
+        const { name, type, level, xp } = mergedArray[item]['reduxState']['character'];
         return (
           <tr key={key}>
             <td>{key + 1}.</td>
-            <td>{characterName}</td>
-            <td>{characterType}</td>
-            <td>{characterLevel}</td>
-            <td>{characterXp}</td>
-            <td><button onClick={this.handleOpen.bind(this, [characterName, characterType, characterLevel, characterXp])} /*onClick={this.showModal.bind(this, key)}*/ >Details!</button></td>
+            <td>{name}</td>
+            <td>{type}</td>
+            <td>{level}</td>
+            <td>{xp}</td>
+            <td><button onClick={this.handleOpen.bind(this, [name, type, level, xp])} /*onClick={this.showModal.bind(this, key)}*/ >Details!</button></td>
           </tr>
         )
       })
@@ -129,10 +129,20 @@ class LandingPage extends Component {
         <thead>
           <tr>
             <th colSpan="50">D2IdleRPG Ranklist</th>
+
           </tr>
         </thead>
         <tbody>
           {/* {this.renderAllCharacters()} */}
+          <tr>
+            <td>#</td>
+            <td>Character name</td>
+            <td>Class</td>
+            <td>Level</td>
+            <td>Exp</td>
+            <td>Details</td>
+
+          </tr>
           {this.state.characters.length > 0 ? this.renderAllCharacters() : <tr><td>Fetching database...</td></tr>}
         </tbody>
       </table>

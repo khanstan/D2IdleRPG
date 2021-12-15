@@ -4,10 +4,13 @@ import { HERO_CLASSES_MAP } from '../../constants/gameConstants';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
-import * as ROUTES from '../../constants/routes';
 import { off, onValue } from "firebase/database";
 import './CharacterCreation.css';
 import { withAuthorization } from '../Session';
+import { play, reload } from './../Home/userSlice';
+import { connect } from 'react-redux';
+import * as ROUTES from '../../constants/routes';
+
 
 let characterSelected = null;
 
@@ -52,6 +55,7 @@ class CharacterCreationFormBase extends Component {
         super(props);
 
         this.state = { ...INITIAL_STATE };
+        this.uid = null;
     }
 
     onSubmit = event => {
@@ -62,7 +66,12 @@ class CharacterCreationFormBase extends Component {
             this.props.firebase
                 .createCharacter(name, characterSelected)
                 .then(() => {
-                    this.setState({ ...INITIAL_STATE });
+                    this.setState({
+                        name: '',
+                        character: '',
+                    })
+                    //this.setState({ ...INITIAL_STATE });
+                    //this.props.history.push(ROUTES.HOME);
                 })
                 .catch(error => {
                     this.setState({ error });
@@ -75,23 +84,40 @@ class CharacterCreationFormBase extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    loadCharacter = (uid, cid) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "text/plain");
+
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+
+        fetch(`https://d2idlerpg-default-rtdb.europe-west1.firebasedatabase.app/characters/${uid}/${cid}.json`, requestOptions)
+            .then(response => response.json())
+            //.then(data=> console.log(data['reduxState']))
+            .then(data => this.props.reload(data['reduxState']))
+            .catch(error => console.log('Error: ', error));
+    }
+
     playCharacter(e) {
-        this.props.firebase.playCharacter(e.target.dataset.charid);
+        this.loadCharacter(this.uid, e.target.dataset.charid);
+        this.props.playDispatch([this.uid, e.target.dataset.charid]);
         this.props.history.push(ROUTES.HOME);
-        console.log('You are now playing with: ' + this.currentCharacterId)
     };
 
     renderCharacters() {
         const characters = this.state.characters;
         return characters.map((character, index) => {
-            const { characterName, characterType, characterLevel, cid } = character;
+            const { name, type, level, cid } = character;
             return (
                 <tr key={index}>
                     <td>{index + 1}.</td>
-                    <td>{characterName}</td>
-                    <td>{characterType}</td>
-                    <td>{characterLevel}</td>
-                    <td><button data-charid={cid} onClick={this.playCharacter.bind(this)}>Play!</button></td>
+                    <td>{name}</td>
+                    <td>{type}</td>
+                    <td>{level}</td>
+                    <td><button data-charid={cid} data-chartype={type} data-charname={name} onClick={this.playCharacter.bind(this)}>Play!</button></td>
                 </tr>
             )
         })
@@ -100,6 +126,7 @@ class CharacterCreationFormBase extends Component {
     componentDidMount() {
         this.props.firebase.auth.onAuthStateChanged(user => {
             if (user) {
+                this.uid = user.uid;
                 onValue(this.props.firebase.charactersRef(user.uid), (snapshot) => {
                     if (!snapshot.val()) {
                         console.log("No characters present")
@@ -107,7 +134,7 @@ class CharacterCreationFormBase extends Component {
                     }
                     const charactersObject = snapshot.val();
                     const charactersList = Object.keys(charactersObject).map(key => ({
-                        ...charactersObject[key],
+                        ...charactersObject[key]['reduxState']['character'],
                         cid: key
                     }));
                     this.setState({
@@ -171,11 +198,20 @@ class CharacterCreationFormBase extends Component {
     }
 }
 
+
+function mapDispatchToProps(dispatch) {
+    return {
+        playDispatch: (arg) => dispatch(play(arg)),
+        reload: (arg) => dispatch(reload(arg)) 
+    };
+}
+
 const condition = authUser => !!authUser;
 
 const CharacterCreationForm = compose(
     withRouter,
     withFirebase,
+    connect(null, mapDispatchToProps),
 )(CharacterCreationFormBase);
 
 

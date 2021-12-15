@@ -70,32 +70,41 @@ class Firebase {
 
   createCharacterKey = () => push(ref(this.db, 'characters/' + this.auth.currentUser.uid));
 
-
   createCharacter = (name, character, creationKey = this.createCharacterKey()) => set(creationKey, {
-    characterName: name,
-    characterType: character,
-    characterLevel: 0,
-    characterXp: 0,
-    characterCurrentHp: 100,
-    characterMaxHp: 100,
-    uid: this.auth.currentUser.uid,
-    cid: creationKey.key,
-    base64: null
+    reduxState : {
+      "battleLog" : {
+        "actions" : [ {
+          "type" : 0
+        } ]
+      },
+      "character" : {
+        "attack" : [ 1, 5 ],
+        "defence" : 5,
+        "hp" : 100,
+        "level" : 1,
+        "name" : name,
+        "speed" : 1,
+        "type" : character,
+        "xp" : 0,
+        "xpToLevelUp" : 100
+      },
+      "currentUser" : {
+        "cid" : creationKey.key,
+        "uid" : this.auth.currentUser.uid
+      },
+      "enemy" : {
+        "attack" : 1,
+        "currentMonsterId" : 0,
+        "defence" : 10,
+        "hp" : 20,
+        "killCheck" : 0,
+        "maxHp" : 20,
+        "name" : "Fallen",
+        "nextMonsterId" : 0,
+        "xp" : 1
+      }
+    },
   });
-
-
-
-  updateCharacter = (cid, cname, ctype, level, xp, currentHp, maxHp) =>
-    set(push(ref(this.db, 'characters/' + this.auth.currentUser.uid + '/' + cid)), {
-      characterName: cname,
-      characterType: ctype,
-      characterLevel: 0,
-      characterXp: 0,
-      characterCurrentHp: 100,
-      characterMaxHp: 100,
-      uid: this.auth.currentUser.uid,
-      base64: null
-    });
 
   playCharacter = (cid) => {
     this.currentCharacterId = cid;
@@ -105,9 +114,8 @@ class Firebase {
 
   charactersRef = (uid) => ref(this.db, 'characters/' + uid);
 
-  // newCharacter = (uid, name) =()
-
   usersRef = () => ref(this.db, 'users');
+
   allCharactersRef = () => ref(this.db, 'characters');
 
 }

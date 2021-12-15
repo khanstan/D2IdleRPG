@@ -13,6 +13,7 @@ class AdminPage extends Component {
     super(props);
 
     this.state = {
+      isAdmin: false,
       loading: false,
       users: [],
     };
@@ -61,24 +62,15 @@ const UserList = ({ users }) => (
   <ul>
     {users.map(user => (
       <li key={user.uid}>
-        <span>
-          <strong>ID:</strong> {user.uid}
-        </span>
-        <span>
-          <strong>E-Mail:</strong> {user.email}
-        </span>
-        <span>
-          <strong>Username:</strong> {user.username}
-        </span>
+          <strong>ID: </strong> {user.uid} 
+          <strong> E-Mail: </strong> {user.email} 
+          <strong> Username: </strong> {user.username} 
       </li>
     ))}
   </ul>
 );
 
-
-
 const condition = authUser => authUser
-   //authUser && !!authUser.roles[ROLES.ADMIN];
 
 export default compose(
   withFirebase,

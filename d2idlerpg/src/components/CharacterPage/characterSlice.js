@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const characterSlice = createSlice({
     name: 'character',
     initialState: {
-        name: "Necromancer",
+        name: "INITIAL STATE",
+        type: "DRU",
         level: 1,
         xpToLevelUp: 100,
         xp: 0,
@@ -31,8 +32,7 @@ export const characterSlice = createSlice({
         },
         levelUp: (state, action) => {
             state.xp = state.level * 100 * 1.25;
-        }
-
+        },
     },
 
 }
