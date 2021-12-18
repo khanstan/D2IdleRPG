@@ -10,7 +10,7 @@ const Character = (props) => (
     <p>Level: {props.level} ({props.xp} XP)</p>
     <p>Attack: {props.attack[0]}-{props.attack[1]}</p>
     <p>Defence: {props.defence}</p>
-    <p>Life: {props.hp}</p>
+    <p>Life: {Math.floor(props.hp)}</p>
     <p>AS/FCR: {props.speed}</p>
   </div>
 );

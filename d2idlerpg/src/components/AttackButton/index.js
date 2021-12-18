@@ -40,16 +40,12 @@ export function Attack() {
     }, [enemy.killCheck]);
 
     const dispatchMulti = () => {
-        dispatch(receiveHit(dmg))
         dispatch(playerHits([dmg, enemy.name]))
+        dispatch(receiveHit(dmg))
         dmg = randomDamage(...characterDamage)
     }
 
-    //const idleButton = document.getElementById("idleButton");
-    //idleButton.addEventListener('click', setInterval(dispatchMulti, 33))
-    //gameLoop(dispatchMulti)
     const [isPaused, setIsPaused] = useState(true)
-
 
     useLayoutEffect(() => {
         if (!isPaused) {

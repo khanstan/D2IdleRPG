@@ -69,7 +69,6 @@ class LandingPage extends Component {
     if (characters.length > 0) {
 
       const mergedArray = Object.assign(...characters);
-      console.log(mergedArray)
       return Object.keys(mergedArray).map((item, key) => {
         const { name, type, level, xp } = mergedArray[item]['reduxState']['character'];
         return (
@@ -79,22 +78,10 @@ class LandingPage extends Component {
             <td>{type}</td>
             <td>{level}</td>
             <td>{xp}</td>
-            <td><button onClick={this.handleOpen.bind(this, [name, type, level, xp])} /*onClick={this.showModal.bind(this, key)}*/ >Details!</button></td>
+            <td><button onClick={this.handleOpen.bind(this, [name, type, level, xp])}>Details!</button></td>
           </tr>
         )
       })
-
-      // return characters.map((character, index) => {
-      //   const { characterName, characterType } = character;
-      //   return (
-      //     <tr key={index}>
-      //       <td>{index + 1}.</td>
-      //       <td>{characterName}</td>
-      //       <td>{characterType}</td>
-      //       <td>test</td>
-      //     </tr>
-      //   )
-      // })
     }
 
 

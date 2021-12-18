@@ -21,7 +21,6 @@ export const battleLogSlice = createSlice({
     },
     reducers: {
         playerHits: (state, action) => {
-            // state.text.unshift(<small>You hit {action.payload[1]} for: <span className="normalDamage">{action.payload[0]}</span></small>);
             state.actions.unshift({
                 type: 1,
                 enemy: action.payload[1],

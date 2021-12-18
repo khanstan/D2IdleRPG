@@ -40,6 +40,6 @@ export const MONSTERS = [
         "hp": 100,
         "attack": 4,
         "defence": 20,
-        "xp": 5
+        "xp": 5000
     },
 ];

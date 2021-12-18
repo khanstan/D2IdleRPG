@@ -46,11 +46,8 @@ const saveStateToCloud = () => {
   };
 
   try {
-    console.log('Saving to cloud...');
-
     fetch(`https://d2idlerpg-default-rtdb.europe-west1.firebasedatabase.app/characters/${uid}/${cid}.json`, requestOptions)
       .then(response => response.text())
-      .then(result => console.log('Saved to cloud'))
       .catch(error => console.log('Error while saving to cloud', error));
   } catch (err) {
     throw new Error('There was an error while trying to save the state to cloud')
@@ -59,7 +56,6 @@ const saveStateToCloud = () => {
 
 const saveStateToLocalStorage = () => {
   try {
-    console.log('Saving to local storage...');
     localStorage.setItem('reduxState', JSON.stringify(store.getState()));
   } catch (err) {
     throw new Error('There was an error while trying to save the state to localStorage')
